@@ -2,6 +2,7 @@ from player import Player
 from deck import Deck
 from strategy import hit_dict, bet_dict
 
+DECK_RESHUFFLE = 0.3
 bet = 1
 
 class Table():
@@ -13,6 +14,8 @@ class Table():
 
 
     def deal(self, player):
+        if self.deck.percent_left < DECK_RESHUFFLE:
+            self.deck.reset()
         player.hand = []
         player.blackjack = False
         player.bust = False
@@ -28,9 +31,6 @@ class Table():
 
 
     def play_out(self, player):
-        #while not player.blackjack and not player.bust and player.score < 16:
-        #    player.hand.append(self.deck.card())
-        #    self.score(player)
         while hit_dict.get(player.score):
             player.hand.append(self.deck.card())
             self.score(player)
